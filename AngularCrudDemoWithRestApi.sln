@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularCrudDemoWithRestApi", "AngularCrudDemoWithRestApi.csproj", "{4EFB9488-AECB-449F-AA43-22C6D14CB09F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4EFB9488-AECB-449F-AA43-22C6D14CB09F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EFB9488-AECB-449F-AA43-22C6D14CB09F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EFB9488-AECB-449F-AA43-22C6D14CB09F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EFB9488-AECB-449F-AA43-22C6D14CB09F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0F982A42-AE71-487F-979A-D493AACB8970}
+	EndGlobalSection
+EndGlobal
