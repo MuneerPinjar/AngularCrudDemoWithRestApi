@@ -14,6 +14,11 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using AngularCrudDemoWithRestApi.Model;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace AngularCrudDemoWithRestApi
 {
@@ -30,17 +35,26 @@ namespace AngularCrudDemoWithRestApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //Setting up connection
-            var connection = Configuration.GetConnectionString("EmployeeAppCon");
-            services.AddDbContext<APIDbContext>(options => options.UseSqlServer(connection));
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
-            //services.AddDbContext<APIDbContext>(options =>
-            //{
-            //    options.UseSqlServer(Configuration.GetConnectionString("EmployeeAppCon"));
-            //});
+            //Connection 
+            services.AddDbContext<APIDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EmployeeAppCon")));
 
+            //Swagger documentation 
+            services.AddSwaggerGen(options => {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "WEB API",
+                    Version = "v1"
+                });
+            });
+            //Enable CORS
+            services.AddCors(c => {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
+            //JSON Serializer
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore).AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             services.AddControllers();
         }
 
@@ -51,15 +65,24 @@ namespace AngularCrudDemoWithRestApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseHttpsRedirection();
             app.UseRouting();
-
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WEB API");
+                c.DocumentTitle = "WEB API";
+                c.DocExpansion(DocExpansion.List);
+            });
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Photos")),
+            //    RequestPath = "/Photos"
+            //});
         }
     }
 }
